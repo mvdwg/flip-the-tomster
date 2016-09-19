@@ -1,8 +1,16 @@
 import Ember from 'ember';
 
-export default Ember.Route.extend({
-  game: Ember.inject.service(),
-  preferences: Ember.inject.service(),
+const { Route, inject: { service } } = Ember;
+
+export default Route.extend({
+  game: service(),
+
+  preferences: service(),
+
+  beforeModel() {
+    let audio = this.get('audio');
+    audio.play('MUSIC', audio.gameMusicTrack, 0.2, true);
+  },
 
   model() {
     return this.get('game').create({

@@ -4,11 +4,19 @@ import range from 'flip-the-tomster/utils/range';
 import Card from 'flip-the-tomster/models/card';
 import ENV from 'flip-the-tomster/config/environment';
 
-export default Ember.Service.extend({
+const { Service, inject: { service }, run } = Ember;
+
+export default Service.extend({
+  audio: service(),
+
   shuffle: randomize,
+
   previousCard: null,
+
   scheduledAnimation: null,
+
   hits: 0,
+
   misses: 0,
 
   tries: Ember.computed('hits', 'misses', function() {
@@ -45,17 +53,23 @@ export default Ember.Service.extend({
       hits: 0,
       misses: 0
     });
+
     let animation = this.get('scheduledAnimation');
+
     if(animation) {
       Ember.run.cancel(animation);
     }
   },
 
   flip(card) {
+    let audio = this.get('audio');
+
     // current card already flipped -> do nothing
     if(card.get('isFlipped')) {
       return false;
     }
+
+    audio.play('FX', audio.fxFlipCard, 1);
 
     // previous card null -> flip current card
     if(this.get('previousCard') === null) {
@@ -69,6 +83,11 @@ export default Ember.Service.extend({
       this.incrementProperty('hits');
       card.set('isFlipped', true);
       this.set('previousCard', null);
+
+      run.later(() => {
+        audio.play('FX', audio.fxCardCorrect, 1);
+      }, 300);
+
       return false;
     }
 
@@ -80,9 +99,11 @@ export default Ember.Service.extend({
       let previous = this.get('previousCard');
       let current = card;
 
-      let animation = Ember.run.later(() => {
+      let animation = run.later(() => {
         Ember.set(current, 'isFlipped', false);
         Ember.set(previous, 'isFlipped', false);
+
+        audio.play('FX', audio.fxCardIncorrect, 1);
       }, 800);
 
       this.set('scheduledAnimation', animation);
