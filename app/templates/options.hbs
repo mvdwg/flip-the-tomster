@@ -38,7 +38,35 @@
   </div>
   <div class="options-container">
     <label class="options-switch">
-      <input type="checkbox" class="options-switch-checkbox">
+      {{input
+        type="checkbox"
+        checked=model.music
+        change=(route-action "setMusic")
+        class="options-switch-checkbox"
+      }}
+      <div class="options-switch-slider"></div>
+    </label>
+
+    <button click={{route-action "setVolume" 'MUSIC' 20}}></button>
+    <button click={{route-action "setVolume" 'MUSIC' 40}}></button>
+    <button click={{route-action "setVolume" 'MUSIC' 60}}></button>
+    <button click={{route-action "setVolume" 'MUSIC' 80}}></button>
+    <button click={{route-action "setVolume" 'MUSIC' 100}}></button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="options-label">
+    Sound effects
+  </div>
+  <div class="options-container">
+    <label class="options-switch">
+      {{input
+        type="checkbox"
+        checked=model.effects
+        change=(route-action "setEffects")
+        class="options-switch-checkbox"
+      }}
       <div class="options-switch-slider"></div>
     </label>
   </div>

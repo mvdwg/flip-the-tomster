@@ -1,8 +1,16 @@
 import Ember from 'ember';
 
-const { Service } = Ember;
+// import preference from 'ember-preferences/computed';
+
+const { Service, computed, inject: { service }, observer } = Ember;
 
 export default Service.extend({
+  preferences: service(),
+
+  musicOn: computed.alias('preferences.music'),
+
+  effectsOn: computed.alias('preferences.effects'),
+
   music: null,
 
   fx: null,
@@ -25,10 +33,28 @@ export default Service.extend({
 
   fxCardIncorrect: '/audio/fx/card-incorrect.mp3',
 
+  musicOnDidChange: observer('musicOn', function() {
+    if (this.get('musicOn')) {
+      this.play('MUSIC', this.get('menuMusicTrack'), 0.8, true);
+    } else {
+      this.stop('MUSIC');
+    }
+  }),
+
+  effectsOnDidChange: observer('effectsOn', function() {
+    if (!this.get('effectsOn')) {
+      this.stop('FX');
+    }
+  }),
+
   play(type, track, volume = 0.8, loop = false) {
     let player = null;
 
     if (type === 'MUSIC') {
+      if (!this.get('musicOn')) {
+        return;
+      }
+
       player = this.get('music');
 
       this.setProperties({
@@ -36,6 +62,10 @@ export default Service.extend({
         isMusicPlaying: true
       });
     } else {
+      if (!this.get('effectsOn')) {
+        return;
+      }
+
       player = this.get('fx');
 
       this.setProperties({
@@ -81,13 +111,19 @@ export default Service.extend({
 
     this.get('music').addEventListener('pause', () => {
       Ember.run(() => {
-        this.set('isMusicPlaying', false);
+        this.setProperties({
+          currentMusicTrack: null,
+          isMusicPlaying: false
+        });
       });
     });
 
     this.get('fx').addEventListener('pause', () => {
       Ember.run(() => {
-        this.set('isFxPlaying', false);
+        this.setProperties({
+          currentFxTrack: null,
+          isFxPlaying: false
+        });
       });
     });
   }
