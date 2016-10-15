@@ -62,7 +62,7 @@ export default Service.extend({
 
     let animation = this.get('scheduledAnimation');
 
-    if(animation) {
+    if (animation) {
       Ember.run.cancel(animation);
     }
   },
@@ -71,21 +71,21 @@ export default Service.extend({
     let audio = this.get('audio');
 
     // current card already flipped -> do nothing
-    if(card.get('isFlipped')) {
+    if (card.get('isFlipped')) {
       return false;
     }
 
     audio.play('FX', audio.fxFlipCard, 1);
 
     // previous card null -> flip current card
-    if(this.get('previousCard') === null) {
+    if (this.get('previousCard') === null) {
       card.set('isFlipped', true);
       this.set('previousCard', card);
       return false;
     }
 
     // previous card and current card equals -> flip current
-    if(this.get('previousCard.value') === card.get('value')) {
+    if (this.get('previousCard.value') === card.get('value')) {
       this.incrementProperty('hits');
       card.set('isFlipped', true);
       this.set('previousCard', null);
@@ -98,7 +98,7 @@ export default Service.extend({
     }
 
     // previous card and current card different -> flip previous and show current
-    if(this.get('previousCard.value') !== card.get('value')) {
+    if (this.get('previousCard.value') !== card.get('value')) {
       this.incrementProperty('misses');
       card.set('isFlipped', true);
 
@@ -108,8 +108,6 @@ export default Service.extend({
       let animation = run.later(() => {
         Ember.set(current, 'isFlipped', false);
         Ember.set(previous, 'isFlipped', false);
-
-        audio.play('FX', audio.fxCardIncorrect, 1);
       }, 800);
 
       this.set('scheduledAnimation', animation);

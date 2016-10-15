@@ -1,9 +1,29 @@
 import Ember from 'ember';
+
 import preference from 'ember-preferences/computed';
+
+const { get, $ } = Ember;
 
 export default Ember.Route.extend({
   size: preference('size'),
+
   figure: preference('figure'),
+
+  music: preference('music'),
+
+  effects: preference('effects'),
+
+  musicVolume: preference('musicVolume'),
+
+  effectsVolume: preference('effectsVolume'),
+
+  beforeModel() {
+    let audio = this.get('audio');
+
+    if (!audio.get('isMusicPlaying') || audio.get('currentMusicTrack') !== audio.get('menuMusicTrack')) {
+      audio.play('MUSIC', audio.menuMusicTrack, 0.8, true);
+    }
+  },
 
   model() {
     return {
@@ -32,7 +52,11 @@ export default Ember.Route.extend({
           label: '8 x 8',
           value: 64
         }
-      ]
+      ],
+      music: this.get('music'),
+      effects: this.get('effects'),
+      musicVolume: this.get('musicVolume'),
+      effectsVolume: this.get('effectsVolume')
     };
   },
 
@@ -40,8 +64,27 @@ export default Ember.Route.extend({
     setFigure(option) {
       this.set('figure', option.value);
     },
+
     setSize(option) {
       this.set('size', option.value);
+    },
+
+    setMusic(event) {
+      let element = get(event, 'target');
+      let checked = $(element).is(':checked');
+
+      this.set('music', checked);
+    },
+
+    setEffects(event) {
+      let element = get(event, 'target');
+      let checked = $(element).is(':checked');
+
+      this.set('effects', checked);
+    },
+
+    setVolume(type, volume) {
+      console.log('SET VOLUME', type, volume);
     }
   }
 });
