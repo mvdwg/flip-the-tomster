@@ -19,6 +19,10 @@ export default Service.extend({
 
   misses: 0,
 
+  ended: Ember.computed('hits', 'size', function() {
+    return this.get('hits') === this.get('size') / 2;
+  }),
+
   tries: Ember.computed('hits', 'misses', function() {
     return this.get('hits') + this.get('misses');
   }),
@@ -26,6 +30,8 @@ export default Service.extend({
   create(options = {}) {
     let size = options.size || 16;
     let figure = options.figure || 'tomster';
+
+    this.set('size', size);
 
     return Ember.Object.create({
       cards: this.generateCards(size, figure),
