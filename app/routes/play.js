@@ -9,7 +9,7 @@ export default Route.extend({
 
   beforeModel() {
     let audio = this.get('audio');
-    audio.play('MUSIC', audio.gameMusicTrack, 0.2, true);
+    audio.playMusic(audio.gameMusicTrack, true);
   },
 
   model() {

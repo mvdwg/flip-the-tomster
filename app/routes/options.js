@@ -21,7 +21,7 @@ export default Ember.Route.extend({
     let audio = this.get('audio');
 
     if (!audio.get('isMusicPlaying') || audio.get('currentMusicTrack') !== audio.get('menuMusicTrack')) {
-      audio.play('MUSIC', audio.menuMusicTrack, 0.8, true);
+      audio.playMusic(audio.menuMusicTrack, true);
     }
   },
 
@@ -83,8 +83,9 @@ export default Ember.Route.extend({
       this.set('effects', checked);
     },
 
-    setVolume(type, volume) {
-      console.log('SET VOLUME', type, volume);
+    setMusicVolume() {
+      let currentVolume = this.controller.get('model.musicVolume');
+      this.set('musicVolume', parseFloat(currentVolume));
     }
   }
 });

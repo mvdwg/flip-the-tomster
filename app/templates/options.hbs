@@ -46,12 +46,24 @@
       }}
       <div class="options-switch-slider"></div>
     </label>
+  </div>
+</div>
 
-    <button click={{route-action "setVolume" 'MUSIC' 20}}></button>
-    <button click={{route-action "setVolume" 'MUSIC' 40}}></button>
-    <button click={{route-action "setVolume" 'MUSIC' 60}}></button>
-    <button click={{route-action "setVolume" 'MUSIC' 80}}></button>
-    <button click={{route-action "setVolume" 'MUSIC' 100}}></button>
+<div class="section">
+  <div class="options-label">
+    Music volume
+  </div>
+  <div class="options-container">
+    {{input
+      type="range"
+      min="0"
+      max="1"
+      value=model.musicVolume
+      step=0.1
+      input=(route-action "setMusicVolume" "music")
+      change=(route-action "setMusicVolume" "music")
+    }}
+    <strong>Current vol: {{model.musicVolume}}</strong>
   </div>
 </div>
 

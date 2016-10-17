@@ -75,7 +75,7 @@ export default Service.extend({
       return false;
     }
 
-    audio.play('FX', audio.fxFlipCard, 1);
+    audio.play('FX', audio.fxFlipCard);
 
     // previous card null -> flip current card
     if (this.get('previousCard') === null) {
@@ -91,7 +91,7 @@ export default Service.extend({
       this.set('previousCard', null);
 
       run.later(() => {
-        audio.play('FX', audio.fxCardCorrect, 1);
+        audio.play('FX', audio.fxCardCorrect);
       }, 300);
 
       return false;
