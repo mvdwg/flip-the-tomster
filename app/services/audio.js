@@ -1,81 +1,69 @@
 import Ember from 'ember';
 
-// import preference from 'ember-preferences/computed';
-
-const { Service, computed, inject: { service }, observer } = Ember;
+const { Service, computed, inject: { service }, observer, isNone } = Ember;
 
 export default Service.extend({
   preferences: service(),
 
   musicOn: computed.alias('preferences.music'),
-
-  effectsOn: computed.alias('preferences.effects'),
-
-  music: null,
-
-  fx: null,
-
+  musicVolume: computed.alias('preferences.musicVolume'),
+  musicPlayer: null,
   isMusicPlaying: false,
-
-  isFxPlaying: false,
-
   currentMusicTrack: null,
 
-  currentFxTrack: null,
+  fxOn: computed.alias('preferences.effects'),
+  fxVolume: computed.alias('preferences.effectsVolume'),
 
   menuMusicTrack: '/audio/music/bensound-jazzyfrenchy.mp3',
-
   gameMusicTrack: '/audio/music/bensound-countryboy.mp3',
-
   fxFlipCard: '/audio/fx/card-flip.mp3',
-
   fxCardCorrect: '/audio/fx/card-correct.mp3',
-
   fxCardIncorrect: '/audio/fx/card-incorrect.mp3',
 
   musicOnDidChange: observer('musicOn', function() {
     if (this.get('musicOn')) {
-      this.play('MUSIC', this.get('menuMusicTrack'), 0.8, true);
+      this.playMusic(this.get('menuMusicTrack'), true);
     } else {
       this.stop('MUSIC');
     }
   }),
 
-  effectsOnDidChange: observer('effectsOn', function() {
-    if (!this.get('effectsOn')) {
-      this.stop('FX');
+  musicVolumeDidChange: observer('musicVolume', function() {
+    if (this.get('musicOn') && this.get('isMusicPlaying')) {
+      let player = this.get('musicPlayer');
+      player.volume = this.get('musicVolume');
     }
   }),
 
-  play(type, track, volume = 0.8, loop = false) {
-    let player = null;
-
-    if (type === 'MUSIC') {
-      if (!this.get('musicOn')) {
-        return;
-      }
-
-      player = this.get('music');
-
-      this.setProperties({
-        currentMusicTrack: track,
-        isMusicPlaying: true
-      });
-    } else {
-      if (!this.get('effectsOn')) {
-        return;
-      }
-
-      player = this.get('fx');
-
-      this.setProperties({
-        currentFxTrack: track,
-        isFxPlaying: true
-      });
+  playMusic(track, loop = false) {
+    if (!this.get('musicOn')) {
+      return;
     }
 
+    let player = this.get('musicPlayer');
+
+    this.setProperties({
+      currentMusicTrack: track,
+      isMusicPlaying: true
+    });
+
     player.src = track;
-    player.volume = volume;
+    player.volume = this.get('musicVolume');
+    player.loop = loop;
+    player.play();
+  },
+
+  play(type, track, loop = false) {
+    let player = null;
+
+    if (!this.get('effectsOn')) {
+      return;
+    }
+
+    player = new Audio();
+
+    player.src = track;
+    player.volume = this.get('fxVolume');
     player.loop = loop;
     player.play();
   },
@@ -84,16 +72,10 @@ export default Service.extend({
     let player = this.get('fx');
 
     if (type === 'MUSIC') {
-      player = this.get('music');
+      player = this.get('musicPlayer');
       this.setProperties({
         currentMusicTrack: null,
         isMusicPlaying: false
-      });
-    } else {
-      player = this.get('fx');
-      this.setProperties({
-        currentFxTrack: null,
-        isFxPlaying: false
       });
     }
 
@@ -104,25 +86,23 @@ export default Service.extend({
   init() {
     this._super(...arguments);
 
+    if (isNone(this.get('musicVolume'))) {
+      this.set('musicVolume', .6);
+    }
+
+    if (isNone(this.get('fxVolume'))) {
+      this.set('fxVolume', .8);
+    }
+
     this.setProperties({
-      music: new Audio(),
-      fx: new Audio()
+      musicPlayer: new Audio()
     });
 
-    this.get('music').addEventListener('pause', () => {
+    this.get('musicPlayer').addEventListener('pause', () => {
       Ember.run(() => {
         this.setProperties({
           currentMusicTrack: null,
           isMusicPlaying: false
-        });
-      });
-    });
-
-    this.get('fx').addEventListener('pause', () => {
-      Ember.run(() => {
-        this.setProperties({
-          currentFxTrack: null,
-          isFxPlaying: false
         });
       });
     });
