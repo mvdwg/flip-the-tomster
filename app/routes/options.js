@@ -86,6 +86,11 @@ export default Ember.Route.extend({
     setMusicVolume() {
       let currentVolume = this.controller.get('model.musicVolume');
       this.set('musicVolume', parseFloat(currentVolume));
+    },
+
+    setEffectsVolume() {
+      let currentVolume = this.controller.get('model.effectsVolume');
+      this.set('effectsVolume', parseFloat(currentVolume));
     }
   }
 });

@@ -53,10 +53,10 @@ export default Service.extend({
     player.play();
   },
 
-  play(type, track, loop = false) {
+  playFx(track) {
     let player = null;
 
-    if (!this.get('effectsOn')) {
+    if (!this.get('fxOn')) {
       return;
     }
 
@@ -64,7 +64,7 @@ export default Service.extend({
 
     player.src = track;
     player.volume = this.get('fxVolume');
-    player.loop = loop;
+    player.loop = false;
     player.play();
   },
 
