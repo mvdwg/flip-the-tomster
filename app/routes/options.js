@@ -2,27 +2,19 @@ import Ember from 'ember';
 
 import preference from 'ember-preferences/computed';
 
-const { get, $ } = Ember;
+const { Route, get, $, inject: { service } } = Ember;
 
-export default Ember.Route.extend({
+export default Route.extend({
+  audio: service(),
   size: preference('size'),
-
   figure: preference('figure'),
-
   music: preference('music'),
-
   effects: preference('effects'),
-
   musicVolume: preference('musicVolume'),
-
   effectsVolume: preference('effectsVolume'),
 
   beforeModel() {
-    let audio = this.get('audio');
-
-    if (!audio.get('isMusicPlaying') || audio.get('currentMusicTrack') !== audio.get('menuMusicTrack')) {
-      audio.playMusic(audio.menuMusicTrack, true);
-    }
+    this.get('audio').playMusic(this.get('audio.menuMusicTrack'), true);
   },
 
   model() {
