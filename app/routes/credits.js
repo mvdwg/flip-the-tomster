@@ -1,11 +1,11 @@
 import Ember from 'ember';
 
-export default Ember.Route.extend({
-  beforeModel() {
-    let audio = this.get('audio');
+const { Route, inject: { service } } = Ember;
 
-    if (!audio.get('isMusicPlaying') || audio.get('currentMusicTrack') !== audio.get('menuMusicTrack')) {
-      audio.playMusic(audio.menuMusicTrack, true);
-    }
+export default Route.extend({
+  audio: service(),
+
+  beforeModel() {
+    this.get('audio').playMusic(this.get('audio.menuMusicTrack'), true);
   }
 });

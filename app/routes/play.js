@@ -4,12 +4,11 @@ const { Route, inject: { service } } = Ember;
 
 export default Route.extend({
   game: service(),
-
+  audio: service(),
   preferences: service(),
 
   beforeModel() {
-    let audio = this.get('audio');
-    audio.playMusic(audio.gameMusicTrack, true);
+    this.get('audio').playMusic(this.get('audio.gameMusicTrack'), true);
   },
 
   model() {
