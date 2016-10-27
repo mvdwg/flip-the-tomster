@@ -36,7 +36,8 @@ export default Service.extend({
   }),
 
   playMusic(track, loop = false) {
-    if (!this.get('musicOn')) {
+    if (!this.get('musicOn') ||
+      this.get('isMusicPlaying') && this.get('currentMusicTrack') === track) {
       return;
     }
 
@@ -87,11 +88,11 @@ export default Service.extend({
     this._super(...arguments);
 
     if (isNone(this.get('musicVolume'))) {
-      this.set('musicVolume', .6);
+      this.set('musicVolume', 0.6);
     }
 
     if (isNone(this.get('fxVolume'))) {
-      this.set('fxVolume', .8);
+      this.set('fxVolume', 0.8);
     }
 
     this.setProperties({
