@@ -56,14 +56,13 @@
   <div class="options-container">
     {{input
       type="range"
-      min="0"
+      min="0.1"
       max="1"
       value=model.musicVolume
       step=0.1
       input=(route-action "setMusicVolume")
       change=(route-action "setMusicVolume")
     }}
-    <strong>Current vol: {{model.musicVolume}}</strong>
   </div>
 </div>
 
@@ -91,14 +90,13 @@
   <div class="options-container">
     {{input
       type="range"
-      min="0"
+      min="0.1"
       max="1"
       value=model.effectsVolume
       step=0.1
       input=(route-action "setEffectsVolume")
       change=(route-action "setEffectsVolume")
     }}
-    <strong>Current vol: {{model.effectsVolume}}</strong>
   </div>
 </div>
 

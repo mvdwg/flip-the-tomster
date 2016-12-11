@@ -68,16 +68,16 @@ export default Route.extend({
       this.set('music', checked);
     },
 
+    setMusicVolume() {
+      let currentVolume = this.controller.get('model.musicVolume');
+      this.set('musicVolume', parseFloat(currentVolume));
+    },
+
     setEffects(event) {
       let element = get(event, 'target');
       let checked = $(element).is(':checked');
 
       this.set('effects', checked);
-    },
-
-    setMusicVolume() {
-      let currentVolume = this.controller.get('model.musicVolume');
-      this.set('musicVolume', parseFloat(currentVolume));
     },
 
     setEffectsVolume() {
