@@ -1,3 +1,4 @@
+import ENV from 'flip-the-tomster/config/environment';
 import Ember from 'ember';
 
 const { Service, computed, inject: { service }, observer, isNone } = Ember;
@@ -34,6 +35,12 @@ export default Service.extend({
   }),
 
   playMusic(track, loop = false) {
+    if (!this.isValidMusic(track)) {
+      console.warn('Audio service: Trying to play unknown music track.');
+      this.stopMusic();
+      return;
+    }
+
     if (!this.get('musicOn') ||
       this.get('isMusicPlaying') && this.get('currentMusicTrack') === track) {
       return;
@@ -49,10 +56,31 @@ export default Service.extend({
     player.src = track;
     player.volume = this.get('musicVolume');
     player.loop = loop;
-    player.play();
+    if (ENV.environment !== 'test') {
+      player.play();
+    }
+  },
+
+  isValidMusic(track) {
+    return [
+      this.get('menuMusicTrack'),
+      this.get('gameMusicTrack')
+    ].includes(track);
+  },
+
+  isValidFx(track) {
+    return [
+      this.get('fxFlipCard'),
+      this.get('fxCardCorrect')
+    ].includes(track);
   },
 
   playFx(track) {
+    if (!this.isValidFx(track)) {
+      console.warn('Audio service: Trying to play unknown FX track.');
+      return;
+    }
+
     if (!this.get('fxOn')) {
       return;
     }
@@ -62,7 +90,9 @@ export default Service.extend({
     player.src = track;
     player.volume = this.get('fxVolume');
     player.loop = false;
-    player.play();
+    if (ENV.environment !== 'test') {
+      player.play();
+    }
   },
 
   stopMusic() {
@@ -73,8 +103,10 @@ export default Service.extend({
       isMusicPlaying: false
     });
 
-    player.pause();
-    player.currentTime = 0;
+    if (ENV.environment !== 'test') {
+      player.pause();
+      player.currentTime = 0;
+    }
   },
 
   init() {
@@ -92,6 +124,13 @@ export default Service.extend({
 
     this.get('musicPlayer').addEventListener('pause', () => {
       Ember.run(() => {
+        this.stopMusic();
+      });
+    });
+
+    this.get('musicPlayer').addEventListener('error', (error) => {
+      Ember.run(() => {
+        console.error('Audio service: An error has occurred', error);
         this.stopMusic();
       });
     });
