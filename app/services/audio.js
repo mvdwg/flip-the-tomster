@@ -18,20 +18,18 @@ export default Service.extend({
   gameMusicTrack: '/audio/music/bensound-countryboy.mp3',
   fxFlipCard: '/audio/fx/card-flip.mp3',
   fxCardCorrect: '/audio/fx/card-correct.mp3',
-  fxCardIncorrect: '/audio/fx/card-incorrect.mp3',
 
   musicOnDidChange: observer('musicOn', function() {
     if (this.get('musicOn')) {
       this.playMusic(this.get('menuMusicTrack'), true);
     } else {
-      this.stop('MUSIC');
+      this.stopMusic();
     }
   }),
 
   musicVolumeDidChange: observer('musicVolume', function() {
     if (this.get('musicOn') && this.get('isMusicPlaying')) {
-      let player = this.get('musicPlayer');
-      player.volume = this.get('musicVolume');
+      Ember.set(this, 'musicPlayer.volume', this.get('musicVolume'));
     }
   }),
 
@@ -55,13 +53,11 @@ export default Service.extend({
   },
 
   playFx(track) {
-    let player = null;
-
     if (!this.get('fxOn')) {
       return;
     }
 
-    player = new Audio();
+    let player = new Audio();
 
     player.src = track;
     player.volume = this.get('fxVolume');
@@ -69,16 +65,13 @@ export default Service.extend({
     player.play();
   },
 
-  stop(type) {
-    let player = this.get('fx');
+  stopMusic() {
+    let player = this.get('musicPlayer');
 
-    if (type === 'MUSIC') {
-      player = this.get('musicPlayer');
-      this.setProperties({
-        currentMusicTrack: null,
-        isMusicPlaying: false
-      });
-    }
+    this.setProperties({
+      currentMusicTrack: null,
+      isMusicPlaying: false
+    });
 
     player.pause();
     player.currentTime = 0;
@@ -88,23 +81,18 @@ export default Service.extend({
     this._super(...arguments);
 
     if (isNone(this.get('musicVolume'))) {
-      this.set('musicVolume', 0.6);
+      this.set('musicVolume', 0.8);
     }
 
     if (isNone(this.get('fxVolume'))) {
-      this.set('fxVolume', 0.8);
+      this.set('fxVolume', 0.6);
     }
 
-    this.setProperties({
-      musicPlayer: new Audio()
-    });
+    this.set('musicPlayer', new Audio());
 
     this.get('musicPlayer').addEventListener('pause', () => {
       Ember.run(() => {
-        this.setProperties({
-          currentMusicTrack: null,
-          isMusicPlaying: false
-        });
+        this.stopMusic();
       });
     });
   }
