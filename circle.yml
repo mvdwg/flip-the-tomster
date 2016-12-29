@@ -7,3 +7,9 @@ dependencies:
     - npm install --silent -g bower
   override:
     - bower install --silent
+deployment:
+  production:
+    branch: master
+    owner: mvdwg
+    commands:
+      - ember deploy production
