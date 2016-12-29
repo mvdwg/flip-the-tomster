@@ -5,3 +5,5 @@ dependencies:
   pre:
     - npm config set spin false
     - npm install --silent -g bower
+  override:
+    - bower install --silent
