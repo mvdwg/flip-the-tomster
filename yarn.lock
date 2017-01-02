@@ -2277,9 +2277,9 @@ ember-getowner-polyfill@^1.0.0:
   dependencies:
     ember-cli-babel "^5.1.5"
 
-ember-humans-txt@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ember-humans-txt/-/ember-humans-txt-1.0.0.tgz#44777960e915548f618df1a681b597458563ae21"
+ember-humans-txt@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ember-humans-txt/-/ember-humans-txt-1.0.1.tgz#acdd16568f250c820eb39973fd0f4600dd30b9eb"
   dependencies:
     broccoli-plugin "^1.3.0"
 
