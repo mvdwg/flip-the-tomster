@@ -39,18 +39,15 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
   background: $color-aqua;
 }
 
-input[type="range"]::-moz-range-track {
-  /* stylelint-disable property-no-vendor-prefix, comment-empty-line-before */
-  -moz-appearance: none;
-  /* stylelint-enable */
-  margin-top: rem(-14);
-}
-
 input[type="range"]:focus::-webkit-slider-runnable-track {
   background: $color-aqua;
 }
 
 input[type="range"]::-moz-range-track {
+  /* stylelint-disable property-no-vendor-prefix, comment-empty-line-before */
+  -moz-appearance: none;
+  /* stylelint-enable */
+  margin-top: rem(-14);
   width: 100%;
   height: rem(8.4);
   cursor: pointer;
