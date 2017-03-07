@@ -13,13 +13,25 @@ function tryCard(page) {
     }
 
     let card = Math.floor((Math.random() * page.unselectedCards().count));
+
     page.unselectedCards(card).click();
 
-    return tryCard(page);
+    return wait().then(function() {
+      tryCard(page);
+    });
 }
 
 test('Play with tomster slow', function(assert) {
-  page.visit();
-  tryCard(page);
-  assert.ok(true);
+  page
+    .visit()
+    .clickOn('New Game');
+
+
+  andThen(function() {
+    tryCard(page);
+  });
+
+  andThen(function() {
+    assert.ok(true);
+  });
 });

@@ -7,7 +7,7 @@ import {
 export default create({
   visit: visitable('/'),
   unselectedCards: collection({
-    itemScope: '.flip-card:not(.flip)',
+    itemScope: '.veil',
     item: {
     }
   }),
