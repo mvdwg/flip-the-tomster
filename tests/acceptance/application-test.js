@@ -8,17 +8,17 @@ moduleForAcceptance('Acceptance | application', {
 });
 
 function tryCard(page) {
-    if(page.unselectedCards().count <= 0) {
-      return;
-    }
+  if(page.unselectedCards().count <= 0) {
+    return;
+  }
 
-    let card = Math.floor((Math.random() * page.unselectedCards().count));
+  let card = Math.floor((Math.random() * page.unselectedCards().count));
 
-    page.unselectedCards(card).click();
+  page.unselectedCards(card).click();
 
-    return wait().then(function() {
-      tryCard(page);
-    });
+  return wait().then(function() {
+    tryCard(page);
+  });
 }
 
 test('Play with tomster slow', function(assert) {
