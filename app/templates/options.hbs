@@ -10,7 +10,7 @@
   </div>
   <div class="options-container">
     {{#each model.figures as |option|}}
-      {{#options-button option=option click=(route-action 'setFigure' option) selected=figure  as |option|}}
+      {{#options-button option=option click=(action 'setFigure' option) isSelected=(eq figure option.value)  as |option|}}
         <img src="{{option.image}}" class="options-button-figure">
       {{/options-button}}
     {{/each}}
@@ -23,7 +23,7 @@
   </div>
   <div class="options-container">
     {{#each model.sizes as |option|}}
-      {{#options-button option=option click=(route-action 'setSize' option) selected=size as |option|}}
+      {{#options-button option=option click=(action 'setSize' option) isSelected=(eq size option.value) as |option|}}
           <span class="options-button-size">
             {{option.label}}
           </span>
@@ -40,8 +40,8 @@
     <label class="options-switch">
       {{input
         type="checkbox"
-        checked=model.music
-        change=(route-action "setMusic")
+        checked=music
+        change=(action "setMusic")
         class="options-switch-checkbox"
       }}
       <div class="options-switch-slider"></div>
@@ -58,10 +58,10 @@
       type="range"
       min="0.1"
       max="1"
-      value=model.musicVolume
+      value=musicVolume
       step=0.1
-      input=(route-action "setMusicVolume")
-      change=(route-action "setMusicVolume")
+      input=(action "setMusicVolume")
+      change=(action "setMusicVolume")
     }}
   </div>
 </div>
@@ -74,8 +74,8 @@
     <label class="options-switch">
       {{input
         type="checkbox"
-        checked=model.effects
-        change=(route-action "setEffects")
+        checked=effects
+        change=(action "setEffects")
         class="options-switch-checkbox"
       }}
       <div class="options-switch-slider"></div>
@@ -92,10 +92,10 @@
       type="range"
       min="0.1"
       max="1"
-      value=model.effectsVolume
+      value=effectsVolume
       step=0.1
-      input=(route-action "setEffectsVolume")
-      change=(route-action "setEffectsVolume")
+      input=(action "setEffectsVolume")
+      change=(action "setEffectsVolume")
     }}
   </div>
 </div>

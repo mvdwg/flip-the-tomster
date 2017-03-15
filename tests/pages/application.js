@@ -11,4 +11,10 @@ export default create({
     item: {
     }
   }),
+
+  isFigure(name) {
+    var className = $('.flip-card-figure > div')[0].className;
+
+    return className.indexOf(name) >= 0;
+  }
 });
