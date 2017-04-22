@@ -2220,6 +2220,12 @@ ember-cli@2.11.1:
     walk-sync "^0.3.0"
     yam "0.0.22"
 
+ember-confetti@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/ember-confetti/-/ember-confetti-1.0.3.tgz#58138913b8180d960b537df9b5d3982ce9d5cf58"
+  dependencies:
+    ember-cli-babel "^5.1.7"
+
 ember-data@^2.11.0:
   version "2.11.1"
   resolved "https://registry.yarnpkg.com/ember-data/-/ember-data-2.11.1.tgz#9bfd1298aee3e8471e8056e8b4839e21f6dffcd4"
